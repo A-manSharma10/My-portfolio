@@ -1,12 +1,15 @@
 "use client";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { FormEvent } from "react";
+import emailjs from "@emailjs/browser";
+
 
 const skills = [
   "HTML", "CSS", "JavaScript", "TypeScript",
-  "React.js", "Next.js", "Tailwind CSS", "Framer Motion",
-  "Python", "Django", "C++", "C",
-  "MySQL", "MongoDB", "REST APIs", "Git & GitHub"
+  "React.js", "Next.js", "Node.js", "Tailwind CSS", "Framer Motion", 
+  "Python", "Django", "C++", "C", "DSA",
+  "MySQL", "MongoDB", "REST APIs", "Git & GitHub","Machine Learning"
 ];
 
 const projects = [
@@ -33,6 +36,22 @@ const projects = [
 ];
 
 export default function Home() {
+  const sendEmail = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+
+    emailjs
+      .sendForm("service_5vmqsmj", "template_si9nyq8", form, "JQapmxySWqZaubWKz")
+      .then(() => {
+        alert("Message sent successfully!");
+        form.reset();
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("Failed to send message.");
+      });
+  };
+
   return (
     <main className="min-h-screen px-6 py-12 sm:px-16 bg-gradient-to-br from-[#f0f4ff] to-[#e6f7ff] dark:from-[#0f0f0f] dark:to-[#1a1a1a] text-black dark:text-white font-sans">
       {/* Header */}
@@ -66,57 +85,15 @@ export default function Home() {
           transition={{ delay: 0.4 }}
           className="text-lg text-gray-600 dark:text-gray-400"
         >
-          Full Stack Developer • Python/Django • React/Next.js Enthusiast
-        </motion.p>
+          Full Stack Developer • AI/ML Enthusiast • Creative Problem Solver
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="flex flex-wrap justify-center gap-4 mt-6"
-        >
-          <a
-            href="https://www.linkedin.com/in/amansharma10/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-black text-white dark:bg-white dark:text-black px-5 py-2 rounded-lg font-medium hover:opacity-90"
-          >
-            LinkedIn
-          </a>
-          <a
-            href="https://github.com/A-manSharma10"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="border border-black dark:border-white px-5 py-2 rounded-lg font-medium hover:bg-gray-100 dark:hover:bg-gray-900"
-          >
-            GitHub
-          </a>
-          <a
-            href="/Aman_Sharma_Resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-5 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
-          >
-            Resume
-          </a>
-        </motion.div>
+        </motion.p>
       </header>
 
       {/* Skills */}
       <section className="mb-20">
         <h2 className="text-3xl font-semibold mb-6 text-center text-blue-700 dark:text-blue-300">Skills</h2>
-        <motion.ul
-          className="flex flex-wrap justify-center gap-4"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            visible: {
-              transition: {
-                staggerChildren: 0.07,
-              },
-            },
-          }}
-        >
+        <motion.ul className="flex flex-wrap justify-center gap-4">
           {skills.map((skill, index) => (
             <motion.li
               key={skill}
@@ -136,18 +113,7 @@ export default function Home() {
         <h2 className="text-4xl font-bold mb-12 text-center text-blue-800 dark:text-blue-400">
           Featured Projects
         </h2>
-        <motion.div
-          className="grid gap-10 sm:grid-cols-2"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            visible: {
-              transition: {
-                staggerChildren: 0.3,
-              },
-            },
-          }}
-        >
+        <motion.div className="grid gap-10 sm:grid-cols-2">
           {projects.map((project, index) => (
             <motion.div
               key={project.title}
@@ -162,8 +128,6 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: "easeOut" }}
             >
-      
-
               <h3 className="text-2xl font-bold mb-3 text-blue-900 dark:text-white">
                 {project.title}
               </h3>
@@ -183,6 +147,46 @@ export default function Home() {
             </motion.div>
           ))}
         </motion.div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="mb-24">
+        <h2 className="text-4xl font-bold mb-12 text-center text-blue-800 dark:text-blue-400">Contact Me</h2>
+        <motion.form
+          onSubmit={sendEmail}
+          className="max-w-xl mx-auto p-6 bg-white dark:bg-[#121212] rounded-2xl shadow-2xl space-y-4"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            required
+            className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Your Email"
+            required
+            className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <textarea
+            name="message"
+            placeholder="Your Message"
+            rows={5}
+            required
+            className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            type="submit"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition"
+          >
+            Send Message
+          </button>
+        </motion.form>
       </section>
 
       {/* Footer */}
